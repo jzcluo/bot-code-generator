@@ -1,5 +1,3 @@
-run program in the terminal with python installationsteps.py <source text file>
- <destination js file>
 # Microsoft Bot Dialog Code Generator
 
 Given a txt file with instructions, this code generates code that can be as waterfall steps to guide the user through an installation.
@@ -12,16 +10,19 @@ python installation_steps_generator.py <source_file.txt> <destination_file.js>
 
 ### Text file syntax
 things in [] is optional
+
 nouns:
+
     image {image_url}
-    text {text}
-    link {url}
-    herocard {text : sometext, images : [n, image_url1, image_url2 ... image_urln], buttons : [n, [button_text1, button_text2 ... button_textn]}
-    thumbnailcard {text : sometext, image : [n, image_url1, image_url2 ... image_urln], button : [n, [button_text1, button_text2 ... button_textn]}
-    choiceprompt {text : sometext, choices : [n, choice1, choice2, choice3 ... choicen]}
+    text {texts}   
+    link {url}    
+    herocard {text : sometext, images : [n, image_url1, image_url2 ... image_urln], buttons : [n, [button_text1, button_text2 ... button_textn]}    
+    thumbnailcard {text : sometext, image : [n, image_url1, image_url2 ... image_urln], button : [n, [button_text1, button_text2 ... button_textn]}  
+    choiceprompt {text : sometext, choices : [n, choice1, choice2, choice3 ... choicen]}   
     next
 
 description:
+
     image:
         sends an image whose url is given as a parameter inside {}
     text:
