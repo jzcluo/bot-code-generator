@@ -5,7 +5,7 @@ Given a txt file with instructions, this code generates code that can be as wate
 ## Getting Started
 
 ```
-python installation_steps_generator.py <source_file.txt> <destination_file.js>
+python installation_steps_generator.py <source_file.txt>
 ```
 
 ### Text file syntax
