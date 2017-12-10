@@ -2,17 +2,10 @@ import re
 
 def get_list_from_string(string):
     string = string.strip('[]')
-    array = []
-    current_string = ""
-    for char in string:
-        if char == ',':
-            array.append(current_string.strip())
-            current_string = ""
-        else:
-            current_string = current_string + char
+    if '(' in string and ')' in string:
+        return [tuple([x.strip() for x in x.strip(' ()').split(',')]) for x in re.split(",\s*\(", string)]
     else:
-        array.append(current_string.strip())
-    return array
+        return [x.strip() for x in string.split(',')]
 
 def get_dict_from_string(string):
     result = {}
