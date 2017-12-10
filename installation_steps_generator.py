@@ -10,6 +10,7 @@ translates txt file to javascript code that bot uses
 #need command line arguments
 import sys
 import re
+from my_lib import get_list_of_dicts
 
 source_file_name = sys.argv[1]
 destination_file_name = source_file_name.split('.')[0] + ".js"
@@ -65,7 +66,27 @@ with open(source_file_name, "r") as src, open(destination_file_name, "w") as dst
                     dst.write("\t"*indent + "session.send(`" + text + "`);\n")
                 
             elif action == "herocard":
-                dst.write("\t"*indent + "heronail\n");
+                
+                dst.write("\t"*indent + "session.send(new builder.Message(session)\n")
+                indent += 1
+                dst.write("\t"*indent + ".attachments([\n")
+                indent += 1
+                #all the herocards
+                herocards = get_list_of_dicts(re.search("{.*}", command).group())
+
+                for i in range(arg_number):
+                    herocard = herocards[i]
+                    dst.write("\t"*indent + "new builder.HeroCard(session)\n")
+                    indent += 1
+                    #build card with fields in herocard
+                    
+                    indent -= 1
+                    
+                indent -= 1
+                dst.write("\t"*indent + "])\n")
+                indent -= 1
+                dst.write("\t"*indent + ");\n")
+    
             elif action == "thumbnailcard":
                 dst.write("\t"*indent + "thumbnail\n");
             elif action == "choiceprompt":
