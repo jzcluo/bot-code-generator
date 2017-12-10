@@ -13,11 +13,11 @@ things in [] is optional
 
 actions:
 
-    image [n] {image_url ... image_urln};
-    text [n] {text .. textn};   
-    link [n] {url .. urln};    
+    image [n] {image_url, ... image_urln};
+    text [n] {text, .. textn};   
+    link [n] {url, .. urln};    
     herocard [n] {text : sometext, images : [n, image_url1, image_url2 ... image_urln], buttons : [n, [button_text1, button_text2 ... button_textn]}, {text : sometext, images : [n, image_url1, image_url2 ... image_urln], buttons : [n, [button_text1, button_text2 ... button_textn]};    
-    thumbnailcard [n] {text : sometext, image : [n, image_url1, image_url2 ... image_urln], button : [n, [button_text1, button_text2 ... button_textn]}, {text : sometext, image : [n, image_url1, image_url2 ... image_urln], button : [n, [button_text1, button_text2 ... button_textn]};  
+    thumbnailcard [n] {text : sometext, image : [n, image_url1, image_url2 ... image_urln], buttons : [n, [button_text1, button_text2 ... button_textn]}, {text : sometext, image : [n, image_url1, image_url2 ... image_urln], buttons : [n, [button_text1, button_text2 ... button_textn]};  
     choiceprompt {text : sometext, choices : [n, choice1, choice2, choice3 ... choicen]};   
     next;
 
