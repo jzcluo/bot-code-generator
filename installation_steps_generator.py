@@ -63,32 +63,9 @@ with open(source_file_name, "r") as src, open(destination_file_name, "w") as dst
                     #get all parameters here
                     text = texts[i]
                     dst.write("\t"*indent + "session.send(`" + text + "`);\n")
-                    
-    
-            elif action == "link":
-                dst.write("\t"*indent + "session.send(new builder.Message(session)\n")
-                indent += 1
-                dst.write("\t"*indent + ".attachments([\n")
-                indent += 1
-                #all the urls seperated by commas
-                urls = re.search("{.*}", command).group()[1:-1].split(',')
-
-                for i in range(arg_number):
-                    #get all parameters here
-                    url = urls[i]
-                    dst.write("\t"*indent + "new builder.HeroCard(session)" + url + "\n")
-                    indent += 1
-                    if i < arg_number - 1:
-                        dst.write("\t"*indent + "contentType : 'image/png'},\n")
-                    else:
-                        dst.write("\t"*indent + "contentType : 'image/png'}\n")
-                        
-                    indent -= 1
-                indent -= 1
-                dst.write("\t"*indent + "])\n")
-                indent -= 1
-                dst.write("\t"*indent + ");\n")
+                
             elif action == "herocard":
+                dst.write("\t"*indent + "heronail\n");
             elif action == "thumbnailcard":
                 dst.write("\t"*indent + "thumbnail\n");
             elif action == "choiceprompt":
