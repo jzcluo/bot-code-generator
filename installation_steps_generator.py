@@ -23,25 +23,72 @@ with open(source_file_name, "r") as src, open(destination_file_name, "w") as dst
     indent = 1;
     
     source_contents = src.read().split("next;");
-    print(len(source_contents))
     for arguments in source_contents:
         #print(arguments)
         dst.write("\t"*indent + "(session, results, next) => {\n")
         indent += 1
         for command in arguments.split(';')[:-1]:
-            arg_number = re.match("[0-9]*", command).group(0)
+            arg_number = re.match("[0-9]*", command).group()
             #arg_number is optional, if not specified defaults to 1
             arg_number = 1 if arg_number == "" else int(arg_number)
             
             action = command.split()[0]
             if action == "image":
-                dst.write("\t"*indent + "session.send(new builder.Message(session).\n");
+                dst.write("\t"*indent + "session.send(new builder.Message(session)\n")
+                indent += 1
+                dst.write("\t"*indent + ".attachments([\n")
+                indent += 1
+                #all the urls seperated by commas
+                urls = re.search("{.*}", command).group()[1:-1].split(',')
+
+                for i in range(arg_number):
+                    #get all parameters here
+                    url = urls[i]
+                    dst.write("\t"*indent + "{contentUrl : '" + url + "',\n")
+                    if i < arg_number - 1:
+                        dst.write("\t"*indent + "contentType : 'image/png'},\n")
+                    else:
+                        dst.write("\t"*indent + "contentType : 'image/png'}\n")
+                        
+                indent -= 1
+                dst.write("\t"*indent + "])\n")
+                indent -= 1
+                dst.write("\t"*indent + ");\n")
+    
             elif action == "text":
-                dst.write("\t"*indent + "text\n");
+                #all the texts seperated by commas
+                texts = re.search("{.*}", command).group()[1:-1].split(',')
+
+                for i in range(arg_number):
+                    #get all parameters here
+                    text = texts[i]
+                    dst.write("\t"*indent + "session.send(`" + text + "`);\n")
+                    
+    
             elif action == "link":
-                dst.write("\t"*indent + "link\n");
+                dst.write("\t"*indent + "session.send(new builder.Message(session)\n")
+                indent += 1
+                dst.write("\t"*indent + ".attachments([\n")
+                indent += 1
+                #all the urls seperated by commas
+                urls = re.search("{.*}", command).group()[1:-1].split(',')
+
+                for i in range(arg_number):
+                    #get all parameters here
+                    url = urls[i]
+                    dst.write("\t"*indent + "new builder.HeroCard(session)" + url + "\n")
+                    indent += 1
+                    if i < arg_number - 1:
+                        dst.write("\t"*indent + "contentType : 'image/png'},\n")
+                    else:
+                        dst.write("\t"*indent + "contentType : 'image/png'}\n")
+                        
+                    indent -= 1
+                indent -= 1
+                dst.write("\t"*indent + "])\n")
+                indent -= 1
+                dst.write("\t"*indent + ");\n")
             elif action == "herocard":
-                dst.write("\t"*indent + "herocard\n");
             elif action == "thumbnailcard":
                 dst.write("\t"*indent + "thumbnail\n");
             elif action == "choiceprompt":
