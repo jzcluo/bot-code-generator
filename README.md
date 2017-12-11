@@ -13,11 +13,11 @@ things in [] is optional
 
 actions:
 
-    image [n] {image_url, ... image_urln};
-    text [n] {text, .. textn};   
-    link [n] {(url, text), .. (urln, textn)};    
-    herocard [n] {text : sometext, images : [image_url1, image_url2 ... image_urln], buttons : [button_text1, button_text2 ... button_textn], links : [(link_text1, link_url1), (link_text2, link_url2) ... (link_textn, link_urln)]}, {text : sometext, images : [image_url1, image_url2 ... image_urln], buttons : [button_text1, button_text2 ... button_textn], links : [(link_text1, link_url1), (link_text2, link_url2), ...(link_textn, link_urln)]};    
-    thumbnailcard [n] {text : sometext, image : [n, image_url1, image_url2 ... image_urln], buttons : [n, [button_text1, button_text2 ... button_textn], links : [(link_text1, link_url1), (link_text2, link_url2) ... (link_textn, link_urln)]}, {text : sometext, image : [image_url1, image_url2 ... image_urln], buttons : [button_text1, button_text2 ... button_textn], links : [(link_text1, link_url1), (link_text2, link_url2) ... (link_textn, link_urln)]};  
+    image {image_url, ... image_urln};
+    text {text, .. textn};   
+    link {(url, text), .. (urln, textn)};    
+    herocard {text : sometext, images : [image_url1, image_url2 ... image_urln], buttons : [button_text1, button_text2 ... button_textn], links : [(link_text1, link_url1), (link_text2, link_url2) ... (link_textn, link_urln)]}, {text : sometext, images : [image_url1, image_url2 ... image_urln], buttons : [button_text1, button_text2 ... button_textn], links : [(link_text1, link_url1), (link_text2, link_url2), ...(link_textn, link_urln)]};    
+    thumbnailcard {text : sometext, image : [n, image_url1, image_url2 ... image_urln], buttons : [n, [button_text1, button_text2 ... button_textn], links : [(link_text1, link_url1), (link_text2, link_url2) ... (link_textn, link_urln)]}, {text : sometext, image : [image_url1, image_url2 ... image_urln], buttons : [button_text1, button_text2 ... button_textn], links : [(link_text1, link_url1), (link_text2, link_url2) ... (link_textn, link_urln)]};  
     choiceprompt {text : sometext, choices : [n, choice1, choice2, choice3 ... choicen]};   
     next;
 
