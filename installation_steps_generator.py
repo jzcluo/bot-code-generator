@@ -29,10 +29,7 @@ with open(source_file_name, "r") as src, open(destination_file_name, "w") as dst
         dst.write("\t"*indent + "(session, results, next) => {\n")
         indent += 1
         for command in arguments.split(';')[:-1]:
-            arg_number = re.search("[0-9]", command[:command.find('{')])
-            #arg_number is optional, if not specified defaults to 1
-            arg_number = 1 if arg_number == None else int(arg_number.group())
-            
+
             action = command.split()[0]
             if action == "image":
                 dst.write("\t"*indent + "session.send(new builder.Message(session)\n")
@@ -42,15 +39,17 @@ with open(source_file_name, "r") as src, open(destination_file_name, "w") as dst
                 #all the urls seperated by commas
                 urls = re.search("{.*}", command).group()[1:-1].split(',')
 
-                for i in range(arg_number):
+                #dst.write("\t"*indent + "{\n" + "\t"*(indent + 1) + "contentUrl : '" + ("',\n" + "\t"*(indent + 1) + "contentType : 'image/jpeg'\n" + "\t"*indent + "},\n" + "\t"*indent + "{\n" + "\t"*(indent + 1) + "contentUrl : '").join(urls) + "',\n" + "\t"*(indent + 1) + "contentType : 'image/jpeg'\n" + "\t"*indent + "}\n")
+                
+                for i in range(len(urls)):
                     #get all parameters here
                     url = urls[i]
                     dst.write("\t"*indent + "{\n" + "\t"*(indent + 1) + "contentUrl : '" + url + "',\n")
-                    if i < arg_number - 1:
+                    if i < len(urls) - 1:
                         dst.write("\t"*(indent + 1) + "contentType : 'image/jpeg'\n" + "\t"*indent + "},\n")
                     else:
                         dst.write("\t"*(indent + 1) + "contentType : 'image/jpeg'\n" + "\t"*indent + "}\n")
-                        
+                
                 indent -= 1
                 dst.write("\t"*indent + "])\n")
                 indent -= 1
@@ -60,7 +59,7 @@ with open(source_file_name, "r") as src, open(destination_file_name, "w") as dst
                 #all the texts seperated by commas
                 texts = re.search("{.*}", command).group()[1:-1].split(',')
 
-                for i in range(arg_number):
+                for i in range(len(texts)):
                     #get all parameters here
                     text = texts[i]
                     dst.write("\t"*indent + "session.send(`" + text + "`);\n")
@@ -70,18 +69,18 @@ with open(source_file_name, "r") as src, open(destination_file_name, "w") as dst
                 for herocards, if there contains buttons that are for user selection,
                 they need to be put in a prompt.choice and not send
                 """
+                herocards = get_list_of_dicts(re.search("{.*}", command).group())
                 
-                dst.write("\t"*indent + "session.send(new builder.Message(session)\n")
+                dst.write("\t"*indent + "let herocards = new builder.Message(session)\n")
                 indent += 1
                 #if there is more than one argument, then put them in a carousel
-                if arg_number > 1:
+                if len(herocards) > 1:
                     dst.write("\t"*indent + ".attachmentLayout(builder.AttachmentLayout.carousel)\n")
                 dst.write("\t"*indent + ".attachments([\n")
                 indent += 1
                 #all the herocards
-                herocards = get_list_of_dicts(re.search("{.*}", command).group())
 
-                for i in range(arg_number):
+                for i in range(len(herocards)):
                     #herocard is a python dictionary with fields matched with their values
                     herocard = herocards[i]
                     dst.write("\t"*indent + "new builder.HeroCard(session)\n")
@@ -133,7 +132,7 @@ with open(source_file_name, "r") as src, open(destination_file_name, "w") as dst
                         dst.write("\n" + "\t"*indent + "])")
                         
                     indent -= 1
-                    if i < arg_number - 1:
+                    if i < len(herocards) - 1:
                         dst.write(",\n")
                     else:
                         dst.write("\n")
