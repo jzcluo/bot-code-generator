@@ -10,7 +10,8 @@ translates txt file to javascript code that bot uses
 #need command line arguments
 import sys
 import re
-from my_lib import get_list_of_dicts
+import json
+from my_lib import get_list_of_dicts, get_dict_from_string
 
 source_file_name = sys.argv[1]
 destination_file_name = source_file_name.split('.')[0] + ".js"
@@ -141,10 +142,24 @@ with open(source_file_name, "r") as src, open(destination_file_name, "w") as dst
                 dst.write("\t"*indent + "])\n")
                 indent -= 1
                 dst.write("\t"*indent + ");\n")
-    
+                            
+                #if this herocard contains buttons user could click on
+                #use prompt.choice
+                if any("buttons" in herocard for herocard in herocards):
+                    for herocard in herocards:
+                        if "buttons" in herocard:
+                            dst.write("\t"*indent + "builder.Prompts.choice(session, herocards, " + json.dumps(herocard["buttons"]) + ");")
+                else:
+                    dst.write("\t"*indent + "session.send(herocards);\n")
+                    
             elif action == "thumbnailcard":
+                """
+                identical to the code for herocard
+                """
                 dst.write("\t"*indent + "thumbnail\n");
             elif action == "choiceprompt":
+                choiceprompt = get_dict_from_string(re.search("{.*}", command).group()[1:-1])
+                dst.write("\t"*indent + "builder.Prompts.choice(session, " + choiceprompt["text"] + ", " + json.dumps(choiceprompt["choices"]) + ");")
                 dst.write("\t"*indent + "choiceprompt\n");
         indent -= 1
         dst.write("\t"*indent + "},\n")
