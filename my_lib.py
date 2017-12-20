@@ -1,8 +1,33 @@
 import re
 
+def get_block(string):
+    string = string.strip()
+    stack = []
+
+    result = ""
+
+    opening_brackets = set(['[', '{'])
+    closing_brackets = set([']', '}'])
+
+    bracket_reached = False
+    index = 0
+    #only stop when stack is empty and it has reached a bracket
+    while len(stack) != 0 or not bracket_reached:
+        result += string[index]
+        if string[index] in opening_brackets:
+            stack.append(string[index])
+            bracket_reached = True
+        elif string[index] in closing_brackets:
+            stack.pop()
+        index += 1
+
+    return result
+
 def get_list_from_string(string):
-    string = string.strip('[]')
-    if '(' in string and ')' in string:
+    string = re.search("\[.*\]", string).group()[1:-1]
+    if ':' in string:
+        return [x for x in re.split("(?<=\}),|(?<=\]),", string)]
+    elif '(' in string and ')' in string:
         return [tuple([x.strip() for x in x.strip(' ()').split(',')]) for x in re.split(",\s*\(", string)]
     else:
         return [x.strip() for x in string.split(',')]
