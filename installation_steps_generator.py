@@ -11,24 +11,31 @@ translates txt file to javascript code that bot uses
 import sys
 import re
 import json
+import os
 from my_lib import get_list_of_dicts, get_dict_from_string
-from code_generator import(
+from preprocessor import preprocess
+from code_generator import (
     generate_text_code,
     generate_image_code,
     generate_herocard_code
     )
 
 source_file_name = sys.argv[1]
+preprocessed_file_name = source_file_name.split('.')[0] + "_preprocessed.txt"
+preprocess(source_file_name)
+
 destination_file_name = source_file_name.split('.')[0] + ".js"
 destination_min_file_name = source_file_name.split('.')[0] + ".min.js"
 
+source_file_name = preprocessed_file_name
+
 with open(source_file_name, "r") as src, open(destination_file_name, "w") as dst:
     #rewrite source file to nodejs file
-    
+
     #number of tabs in front of code
     #indentation starts at one tab
     indent = 1;
-    
+
     source_contents = src.read().split("next;");
     for arguments in source_contents:
         #print(arguments)
@@ -40,16 +47,16 @@ with open(source_file_name, "r") as src, open(destination_file_name, "w") as dst
             if action == "image":
                 #fix the indentation by replacing first tab with correct number of tabs
                 dst.write(re.sub(r"^\t|(?<=[^\t])\t", "\t"*indent, generate_image_code(command)))
-    
+
             elif action == "text":
                 #fix the indentation by replacing first tab with correct number of tabs
                 dst.write(re.sub(r"^\t|(?<=[^\t])\t", "\t"*indent, generate_text_code(command)))
-                
+
             elif action == "herocard":
                 #fix the indentation by replacing first tab with correct number of tabs
                 dst.write(re.sub(r"^\t|(?<=[^\t])\t", "\t"*indent, generate_herocard_code(command)))
-                
-                    
+
+
             elif action == "thumbnailcard":
                 """
                 identical to the code for herocard
@@ -57,9 +64,15 @@ with open(source_file_name, "r") as src, open(destination_file_name, "w") as dst
                 dst.write("\t"*indent + "thumbnail\n");
             elif action == "choiceprompt":
                 choiceprompt = get_dict_from_string(re.search("{.*}", command).group()[1:-1])
-                dst.write("\t"*indent + "builder.Prompts.choice(session, " + choiceprompt["text"] + ", " + json.dumps(choiceprompt["choices"]) + ");")
-                dst.write("\t"*indent + "choiceprompt\n");
+                
+                #make text contain one whitespace if it is empty because bot framework requires it
+                if not choiceprompt["text"]:
+                    choiceprompt["text"] = " "
+                    
+                dst.write("\t"*indent + 'builder.Prompts.choice(session, "' + choiceprompt["text"] + '", ' + json.dumps(choiceprompt["choices"]) + ");\n")
+
         indent -= 1
         dst.write("\t"*indent + "},\n")
-    
+
+#os.remove(source_file_name)
 print("Code successfully generated to " + destination_file_name);

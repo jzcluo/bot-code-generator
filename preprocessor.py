@@ -21,7 +21,7 @@ def preprocess(file):
             command = command.replace("\n", "").strip()
             if re.search('\S*', command).group() == "link":
                 #replace link command with herocard command
-                dst.write("herocard {links : [" + re.search("{.*}", command).group()[1:-1] + "]};\n")
+                dst.write("herocard {link : [" + re.search("\[.*\]", command).group()[1:-1] + "]};\n")
             else:
                 dst.write(command + ";\n")
 
@@ -50,17 +50,37 @@ def preprocess(file):
                 if any("buttons" in herocard for herocard in herocards):
                     #define insert_after
                     pass
+
+            elif "choiceprompt" in line:
+                #parse choiceprompt and put in conditional after "next"
+
+                #write the first part up to the first open square bracket
+                dst.write(re.search("[^\[]*\[", line).group())
+
+                index = line.find('[') + 1
+                current = ""
+
+                insert_after = "conditional {results.response.entity, "
+
+                while index < len(line):
+                    if line[index] == ",":
+                        current = ""
+                    elif line[index] == "-":
+                        dst.write(current)
+
+
+
             elif line.strip().strip(';') == "next":
                 if insert_before:
                     #if insert_before has a value
                     dst.write(insert_before)
+                    insert_before = ""
                 else:
                     #if there is not a insert_before
                     #put in a choiceprompt that waits for user interaction
                     dst.write("choiceprompt {text : , choices:[Next Step]};\n")
                     insert_after = ""
 
-                dst.write(insert_before)
                 dst.write("next;\n")
                 dst.write(insert_after)
 
