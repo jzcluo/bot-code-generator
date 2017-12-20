@@ -18,7 +18,7 @@ actions:
     herocard {text : sometext, image : [image_url1, image_url2 ... image_urln], button : [button_text1, button_text2 ... button_textn], link : [(link_text1, link_url1), (link_text2, link_url2) ... (link_textn, link_urln)]},
         {text : sometext, image : [image_url1, image_url2 ... image_urln], button : [button_text1, button_text2 ... button_textn], link : [(link_text1, link_url1), (link_text2, link_url2), ...(link_textn, link_urln)]
     };    
-    thumbnailcard {text : sometext, image : [n, image_url1, image_url2 ... image_urln], button : [n, [button_text1, button_text2 ... button_textn], link : [(link_text1, link_url1), (link_text2, link_url2) ... (link_textn, link_urln)]},
+    thumbnailcard {text : sometext, image : [image_url1, image_url2 ... image_urln], button : [n, [button_text1, button_text2 ... button_textn], link : [(link_text1, link_url1), (link_text2, link_url2) ... (link_textn, link_urln)]},
         {text : sometext, image : [image_url1, image_url2 ... image_urln], button : [button_text1, button_text2 ... button_textn], link : [(link_text1, link_url1), (link_text2, link_url2) ... (link_textn, link_urln)]
     };  
     choiceprompt {text : sometext, choices : [choice1->{text : [text, textn], image : [image1, imagen], button : [button1, buttonn], link : [(link_text1, link_url1), (link_textn, link_urln)]},
@@ -26,6 +26,7 @@ actions:
         ... choicen->{text : [text, textn], image : [image1, imagen], button : [button1, buttonn], link : [(link_text1, link_url1), (link_textn, link_urln)]}]
     };
     next;
+    conditional {stringToCompare, case1 : {text : [text1]}, case2 : {herocard : {image : [image_url1, image_ur2]}}}
 
 description:
 
