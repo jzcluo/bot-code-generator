@@ -18,6 +18,7 @@ from code_generator import (
     generate_text_code,
     generate_image_code,
     generate_herocard_code,
+    generate_thumbnailcard_code,
     generate_choiceprompt_code
     )
 
@@ -62,7 +63,7 @@ with open(source_file_name, "r") as src, open(destination_file_name, "w") as dst
                 """
                 identical to the code for herocard
                 """
-                dst.write("\t"*indent + "thumbnail\n");
+                dst.write(re.sub(r"^\t|(?<=[^\t])\t", "\t"*indent, generate_thumbnailcard_code(command)))
             elif action == "choiceprompt":
                 dst.write(re.sub(r"^\t|(?<=[^\t])\t", "\t"*indent, generate_choiceprompt_code(command)))
 

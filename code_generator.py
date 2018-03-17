@@ -136,6 +136,16 @@ def generate_herocard_code(command):
 
     return code
 
+def generate_thumbnailcard_code(command):
+    #since it is almost identical to the code for herocard
+    code = generate_herocard_code(command)
+
+    code = code.replace("herocard", "thumbnailcard")
+    code = code.replace("HeroCard", "ThumbnailCard")
+
+    return code
+
+
 def generate_choiceprompt_code(command):
     #command will look like
     #choiceprompt {text : sometext, choices : [choice1,choice2, choice3]}
