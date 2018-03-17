@@ -17,7 +17,8 @@ from preprocessor import preprocess
 from code_generator import (
     generate_text_code,
     generate_image_code,
-    generate_herocard_code
+    generate_herocard_code,
+    generate_choiceprompt_code
     )
 
 source_file_name = sys.argv[1]
@@ -63,13 +64,7 @@ with open(source_file_name, "r") as src, open(destination_file_name, "w") as dst
                 """
                 dst.write("\t"*indent + "thumbnail\n");
             elif action == "choiceprompt":
-                choiceprompt = get_dict_from_string(re.search("{.*}", command).group()[1:-1])
-                
-                #make text contain one whitespace if it is empty because bot framework requires it
-                if not choiceprompt["text"]:
-                    choiceprompt["text"] = " "
-                    
-                dst.write("\t"*indent + 'builder.Prompts.choice(session, "' + choiceprompt["text"] + '", ' + json.dumps(choiceprompt["choices"]) + ");\n")
+                dst.write(re.sub(r"^\t|(?<=[^\t])\t", "\t"*indent, generate_choiceprompt_code(command)))
 
         indent -= 1
         dst.write("\t"*indent + "},\n")

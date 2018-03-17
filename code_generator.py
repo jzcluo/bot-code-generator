@@ -135,3 +135,21 @@ def generate_herocard_code(command):
         code += "\t"*indent + "session.send(herocards);\n"
 
     return code
+
+def generate_choiceprompt_code(command):
+    #command will look like
+    #choiceprompt {text : sometext, choices : [choice1,choice2, choice3]}
+    code = ""
+    indent = 1
+
+    choiceprompt = get_dict_from_string(re.search("(?<={).*(?=})", command).group())
+    #let choiceList = [a, b, c];
+    code += "\t" * indent + 'let choiceList = ["' + '", "'.join(choiceprompt["choices"]) + '"];\n'
+
+    #let suggestedActions = suggestedActionsMessage(session, text, choiceList);
+    code += "\t" * indent + 'let suggestedActions = SuggestedActionsMessage(session, "' + choiceprompt["text"] + '", choiceList);\n'
+
+    #builder.Prompts.choice(session, suggestedActions, choiceList);
+    code += "\t" * indent + 'builder.Prompts.choice(session, suggestedActions, choiceList);\n'
+
+    return code

@@ -91,7 +91,7 @@ def preprocess(file):
                     insert_after = ""
 
                 dst.write(",".join(choices))
-                dst.write("]}\n")
+                dst.write("]};\n")
 
 
 
