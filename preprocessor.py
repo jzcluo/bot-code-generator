@@ -52,7 +52,17 @@ def preprocess(file):
                     pass
 
             elif "choiceprompt" in line:
+                # set so that when it gets to the next command, it would not add in
+                # a artificial prompt
+                insert_before = True;
+                # updated code as of 2018/3/17
+
+
+
+
+                # old code below
                 #parse choiceprompt and put in conditional after "next"
+
 
                 #write the first part up to the first open square bracket
                 dst.write(re.search("[^\[]*\[", line).group())
@@ -60,20 +70,38 @@ def preprocess(file):
                 index = line.find('[') + 1
                 current = ""
 
-                insert_after = "conditional {results.response.entity, "
+                insert_after = "conditional {results.response.entity, " + line[index : ].replace("->", ":")
 
-                while index < len(line):
-                    if line[index] == ",":
-                        current = ""
-                    elif line[index] == "-":
-                        dst.write(current)
+
+                # while index < len(line):
+                #     if line[index] == ",":
+                #         current = ""
+                #     elif line[index] == "-":
+                #         dst.write(current)
+
+                #add a comma in the front to allow the regular expression to work easier
+                #regular expression to extract all the choices from line
+                #(?<=,)[^-^,]*(?=->)
+                choices = re.findall("(?<=,)[^-^,]*(?=->)", "," + line[index : ])
+                choices = [x.strip() for x in choices]
+
+                if len(choices) == 1:
+                    #then there is no need to check which choice the user chose
+                    #this is the case when user uses a single "next step" button
+                    insert_after = ""
+
+                dst.write(",".join(choices))
+                dst.write("]}\n")
+
 
 
 
             elif line.strip().strip(';') == "next":
                 if insert_before:
                     #if insert_before has a value
-                    dst.write(insert_before)
+                    #update 2018/3/17
+                    #do not see a need for insert before
+                    #dst.write(insert_before)
                     insert_before = ""
                 else:
                     #if there is not a insert_before
