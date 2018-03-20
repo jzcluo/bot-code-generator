@@ -90,6 +90,3 @@ def get_list_of_dicts(string):
 
     array = [get_dict_from_string(x) for x in array]
     return array
-
-case = "case1 : [text : [text1], herocard : {image : [image_url1, image_ur2]}], case2 : [herocard : {image : [image_url1, image_ur2]}]"
-print(get_blocks(case))
