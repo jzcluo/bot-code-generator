@@ -23,6 +23,21 @@ def get_block(string):
 
     return result
 
+def get_blocks(string):
+    #return array of blocks
+    #utilize the get_block function
+    #sample string:
+    #case1 : [text : [text1], herocard : {image : [image_url1, image_ur2]}], case2 : [herocard : {image : [image_url1, image_ur2]}]
+    index = 0
+    blocks = []
+    #this loop condition works if input is indeed blocks of words
+    while index < len(string):
+        block = get_block(string[index:]).strip(", ")
+        index = index + re.search(re.escape(block), string[index:]).end()
+        blocks.append(block)
+    return blocks
+
+
 def get_list_from_string(string):
     string = re.search("\[.*\]", string).group()[1:-1]
     if ':' in string:
@@ -75,3 +90,6 @@ def get_list_of_dicts(string):
 
     array = [get_dict_from_string(x) for x in array]
     return array
+
+case = "case1 : [text : [text1], herocard : {image : [image_url1, image_ur2]}], case2 : [herocard : {image : [image_url1, image_ur2]}]"
+print(get_blocks(case))
