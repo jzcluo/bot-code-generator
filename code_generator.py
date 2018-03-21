@@ -1,6 +1,6 @@
 import re
 import json
-from my_lib import get_list_of_dicts, get_dict_from_string
+from my_lib import get_list_of_dicts, get_dict_from_string, get_block, get_blocks
 
 def generate_image_code(command):
     code = ""
@@ -162,4 +162,47 @@ def generate_choiceprompt_code(command):
     #builder.Prompts.choice(session, suggestedActions, choiceList);
     code += "\t" * indent + 'builder.Prompts.choice(session, suggestedActions, choiceList);\n'
 
+    return code
+
+def generate_conditional_code(command):
+    #generate code that checks an entity
+    #generate if-else block
+    #example
+    #conditional {stringToCompare, case1 : [text : [text1]], case2 : [herocard : {image : [image_url1, image_ur2]}]}
+    code = ""
+    indent = 1
+
+    entity = re.search("(?<={)[^,]*(?=,)", command).group()
+
+    index = command.index(",") + 1
+
+    code += "\t" * indent + "switch (" + entity + ") {\n"
+
+    indent += 1
+
+    cases = get_blocks(command[index:].strip("} "))
+
+    for case in cases:
+        value = case.strip().split(":")[0]
+        code += "\t" * indent + 'case "' + value + '":\n'
+
+        indent += 1
+
+        entities = get_blocks(re.search("\[.*\]", case).group()[1:-1])
+        for entity in entities:
+            action = entity.strip().split(":")[0].strip()
+            #possible actions:
+            #text, image, herocard, thumbnailcard, choiceprompt
+            if action == "text":
+                code += (re.sub(r"^\t|(?<=[^\t])\t", "\t"*indent, generate_text_code(entity)))
+            elif action == "image":
+                code += (re.sub(r"^\t|(?<=[^\t])\t", "\t"*indent, generate_image_code(entity)))
+            elif action == "herocard":
+                code += (re.sub(r"^\t|(?<=[^\t])\t", "\t"*indent, generate_herocard_code(entity)))
+            elif action == "thumbnailcard":
+                code += (re.sub(r"^\t|(?<=[^\t])\t", "\t"*indent, generate_thumbnailcard_code(entity)))
+            elif action == "choiceprompt":
+                code += (re.sub(r"^\t|(?<=[^\t])\t", "\t"*indent, generate_choiceprompt_code(entity)))
+
+        indent -= 1
     return code

@@ -42,7 +42,7 @@ def preprocess(file):
         insert_after = ""
 
         for line in dst_contents:
-            if "herocard" in line:
+            if "herocard" in line[:20]:
                 dst.write(line)
 
                 herocards = get_list_of_dicts(re.search("{.*}", line).group())
@@ -51,7 +51,7 @@ def preprocess(file):
                     #define insert_after
                     pass
 
-            elif "choiceprompt" in line:
+            elif "choiceprompt" in line[:20]:
                 # set so that when it gets to the next command, it would not add in
                 # a artificial prompt
                 insert_before = True;
