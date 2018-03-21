@@ -204,5 +204,6 @@ def generate_conditional_code(command):
             elif action == "choiceprompt":
                 code += (re.sub(r"^\t|(?<=[^\t])\t", "\t"*indent, generate_choiceprompt_code(entity)))
 
+        code += "\t" * indent + "break;\n"
         indent -= 1
     return code
