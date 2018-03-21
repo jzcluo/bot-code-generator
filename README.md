@@ -23,7 +23,7 @@ actions:
     };  
     choiceprompt {text : sometext, choices : [choice1->[text : [text, textn], image : [image1, imagen], button : [button1, buttonn], link : [(link_text1, link_url1), (link_textn, link_urln)]],
         choice2->[text : [text, textn], image : [image1, imagen], button : [button1, buttonn], link : [(link_text1, link_url1), (link_textn, link_urln)]],
-        ... choicen->[text : [text, textn], image : [image1, imagen], button : [button1, buttonn], link : [(link_text1, link_url1), (link_textn, link_urln)]]]
+        ... choicen->[text : [text, textn], image : [image1, imagen], button : [button1, buttonn], link : [(link_text1, link_url1), (link_textn, link_urln)]]
     };
     next;
     conditional {stringToCompare, case1 : [text : [text1]], case2 : [herocard : {image : [image_url1, image_ur2]}]}
