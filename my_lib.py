@@ -49,7 +49,6 @@ def get_list_from_string(string):
 
 def get_dict_from_string(string):
     string = string.strip()
-    print(string)
     result = {}
     current_text = ""
     category = "key"
@@ -73,7 +72,8 @@ def get_dict_from_string(string):
         else:
             current_text = current_text + string[index]
         index += 1
-    result[current["key"]] = current_text
+    if current["key"].strip() not in result:
+        result[current["key"].strip()] = current_text
     return result
 
 
