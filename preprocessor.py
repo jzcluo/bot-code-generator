@@ -68,9 +68,10 @@ def preprocess(file):
                 dst.write(re.search("[^\[]*\[", line).group())
 
                 index = line.find('[') + 1
+                end_index = line.rfind(']')
                 current = ""
 
-                insert_after = "conditional {results.response.entity, " + line[index : ].replace("->", ":")
+                insert_after = "conditional {results.response.entity, " + line[index : end_index].replace("->", ":") + "};\n"
 
 
                 # while index < len(line):
@@ -82,10 +83,12 @@ def preprocess(file):
                 #add a comma in the front to allow the regular expression to work easier
                 #regular expression to extract all the choices from line
                 #(?<=,)[^-^,]*(?=->)
-                choices = re.findall("(?<=,)[^-^,]*(?=->)", "," + line[index : ])
+                if "->" in line[index : ]:
+                    choices = re.findall("(?<=,)[^-^,]*(?=->)", "," + line[index : ])
+                else:
+                    choices = line[index : ].strip("]};").split(",")
                 choices = [x.strip() for x in choices]
-
-                if len(choices) == 1:
+                if len(choices) == 1 or "Next Step" in choices:
                     #then there is no need to check which choice the user chose
                     #this is the case when user uses a single "next step" button
                     insert_after = ""

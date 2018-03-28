@@ -52,7 +52,7 @@ def generate_herocard_code(command):
     for herocards, if there contains buttons that are for user selection,
     they need to be put in a prompt.choice and not send
     """
-    herocards = get_list_of_dicts(re.search("{.*}", command).group())
+    herocards = get_list_of_dicts(re.search("{.*}", command).group().strip())
 
     code += "\t"*indent + "let herocards = new builder.Message(session)\n"
     indent += 1
@@ -69,9 +69,10 @@ def generate_herocard_code(command):
         code += "\t"*indent + "new builder.HeroCard(session)\n"
         indent += 1
         #build card with fields in herocard
-
+        print(herocard)
         #see if each field is defined in the dictionary
         if "text" in herocard:
+            print(herocard)
             code += "\t"*indent + ".text(`" + herocard["text"] + "`)\n"
         if "image" in herocard:
             code += "\t"*indent + ".images([\n"
@@ -178,7 +179,7 @@ def generate_conditional_code(command):
     code += "\t" * indent + "switch (" + entity + ") {\n"
 
     indent += 1
-
+    
     cases = get_blocks(command[index:].strip("} "))
 
     for case in cases:

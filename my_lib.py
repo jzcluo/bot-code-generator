@@ -12,7 +12,7 @@ def get_block(string):
     bracket_reached = False
     index = 0
     #only stop when stack is empty and it has reached a bracket
-    while len(stack) != 0 or not bracket_reached:
+    while len(stack) != 0 or not bracket_reached and index < len(string):
         result += string[index]
         if string[index] in opening_brackets:
             stack.append(string[index])
@@ -48,6 +48,8 @@ def get_list_from_string(string):
         return [x.strip() for x in string.split(',')]
 
 def get_dict_from_string(string):
+    string = string.strip()
+    print(string)
     result = {}
     current_text = ""
     category = "key"
@@ -71,6 +73,7 @@ def get_dict_from_string(string):
         else:
             current_text = current_text + string[index]
         index += 1
+    result[current["key"]] = current_text
     return result
 
 
