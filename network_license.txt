@@ -1,0 +1,62 @@
+text [First, you need to be on a Georgia Tech owned machine that can talk to the campus license server. Typically, this means the system is on the Georgia Tech network in an office or lab, or on the campus VPN.];
+choiceprompt {text : Continue?, choices : [Next Step, Help]};
+next;
+
+text [To use a network license, download Matlab installers from software.oit.gatech.edu];
+link [(software.oit.gatech.edu, Matlab installer page)];
+choiceprompt {text : Continue? More details on files to install in next step, choices : [Next Step, Help]};
+next;
+herocard {text : The ISO image files corresponding to the Windows platform- R2017b_win64_dvd1.iso R2017b_win64_dvd2.iso };
+herocard {text : a. The file called license.dat. This file is required during the installation process. It is highly recommended that this file be downloaded prior to the installation. Once done you will need to extract the zip file.
+};
+choiceprompt {text : Continue?, choices : [Next Step, Help]};
+next;
+herocard {text : Start the installation by launching “setup.exe” from the downloaded ISO image.,image : [http://buzzbot-it.gatech.edu/wp-content/uploads/sites/677/2018/03/Step2.png]};
+choiceprompt {text : Continue?, choices : [Next Step, Help]};
+next;
+herocard {text : Make sure you select “Use a File Installation Key”. Then click “Next”.
+,image : [http://buzzbot-it.gatech.edu/wp-content/uploads/sites/677/2018/03/Step3.png]};
+choiceprompt {text : Continue?, choices : [Next Step, Help]};
+next;
+herocard {text : Read the license agreement. If you agree with the terms and conditions, click “Yes” and then click “Next”.
+,image : [http://buzzbot-it.gatech.edu/wp-content/uploads/sites/677/2018/03/Step4.png]};
+choiceprompt {text : Continue?, choices : [Next Step, Help]};
+next;
+herocard {text : Enter the following File Installation Key (make sure to avoid any leading and/or trailing spaces). Then click “Next”. 19811-63381-39632-64689-45816-28031-02371-11344-23344-55051-54611-49353-44636-41025-10294-22461-63683-46964-30928-12461-48246-33632-02160
+,image : [http://buzzbot-it.gatech.edu/wp-content/uploads/sites/677/2018/03/Step5.png]};
+choiceprompt {text : Continue?, choices : [Next Step, Help]};
+next;
+
+herocard {text : Review the installation folder and change if necessary. Then click “Next”.
+,image : [http://buzzbot-it.gatech.edu/wp-content/uploads/sites/677/2018/03/Step6.png]};
+choiceprompt {text : Continue?, choices : [Next Step, Help]};
+next;
+herocard {text : Make sure the License Manager component is unselected. Click “Next”.
+,image : [http://buzzbot-it.gatech.edu/wp-content/uploads/sites/677/2018/03/Step7.png]};
+choiceprompt {text : Continue?, choices : [Next Step, Help]};
+next;
+
+herocard {text : Using the “Browse” button, select the license.dat file you downloaded along with the MATLAB binaries. Then click “Next”.
+,image : [http://buzzbot-it.gatech.edu/wp-content/uploads/sites/677/2018/03/Step8.png]};
+choiceprompt {text : Continue?, choices : [Next Step, Help]};
+next;
+herocard {text : Review the installation options and click “Next” in order to start the installation.
+,image : [http://buzzbot-it.gatech.edu/wp-content/uploads/sites/677/2018/03/Step9.png]};
+choiceprompt {text : Continue?, choices : [Next Step, Help]};next;
+herocard {text : Confirm the installation settings, and click “Install”.
+,image : [http://buzzbot-it.gatech.edu/wp-content/uploads/sites/677/2018/03/Step10.png]};
+choiceprompt {text : Continue?, choices : [Next Step, Help]};
+next;
+
+herocard {text : A progress indicator will be displayed. The installation of MATLAB can take 20 to 40 minutes depending on the speed of your computer,image : [http://buzzbot-it.gatech.edu/wp-content/uploads/sites/677/2018/03/Step11.png]}, {text : Note that You will be asked to insert DVD2. If you are mounting an ISO image using virtual clone drive under Win7 or the built-in Win 8.1 / 10 function. unmount it first. This can be done typically by right-clicking on the virtual DVD drive and selecting unmount.,image :[http://buzzbot-it.gatech.edu/wp-content/uploads/sites/677/2018/03/Step112.png]};
+choiceprompt {text : Continue?, choices : [Next Step, Help]};
+next;
+
+herocard {text :Once the installation is complete, review the additional configuration steps (if applicable). Then select “Next”.
+,image : [http://buzzbot-it.gatech.edu/wp-content/uploads/sites/677/2018/03/Step12.png]};
+choiceprompt {text : Continue?, choices : [Next Step, Help]};
+next;
+herocard {text :1)    Click on the “Finish” button. Your installation is complete, and you are ready to use MATLAB.
+,image : [http://buzzbot-it.gatech.edu/wp-content/uploads/sites/677/2018/03/Step13.png]};
+choiceprompt {text : This is the last step of the network license installation process, choices : [Finish]};
+next;
