@@ -40,7 +40,7 @@ def get_blocks(string):
 
 def get_list_from_string(string):
     string = re.search("\[.*\]", string).group()[1:-1]
-    if ':' in string:
+    if ':' in string and '(' not in string and ')' not in string and string.strip()[:4] != "http":
         return [x for x in re.split("(?<=\}),|(?<=\]),", string)]
     elif '(' in string and ')' in string:
         return [tuple([x.strip() for x in x.strip(' ()').split(',')]) for x in re.split(",\s*\(", string)]

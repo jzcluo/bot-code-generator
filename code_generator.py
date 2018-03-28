@@ -72,7 +72,7 @@ def generate_herocard_code(command):
 
         #see if each field is defined in the dictionary
         if "text" in herocard:
-            code += "\t"*indent + ".text(" + herocard["text"] + ")\n"
+            code += "\t"*indent + ".text(`" + herocard["text"] + "`)\n"
         if "image" in herocard:
             code += "\t"*indent + ".images([\n"
             indent += 1
@@ -89,9 +89,9 @@ def generate_herocard_code(command):
             #see which one appeared in the original command first
             if command.find("buttons") < command.find("links"):
                 code += "\t"*indent + 'builder.CardAction.postBack(session, "' + (",\n" + "\t"*indent + 'builder.CardAction.postBack(session, "').join([x + '", "' + x + '")' for x in herocard["button"]]) + ",\n"
-                code += "\t"*indent + 'builder.CardAction.openUrl(session, "' + (",\n" + "\t"*indent + 'builder.CardAction.openUrl(session, "').join([x[1] + '", "' + x[0] + '")' for x in herocard["link"]])
+                code += "\t"*indent + 'builder.CardAction.openUrl(session, "' + (",\n" + "\t"*indent + 'builder.CardAction.openUrl(session, "').join([x[0] + '", "' + x[1] + '")' for x in herocard["link"]])
             else:
-                code += "\t"*indent + 'builder.CardAction.openUrl(session, "' + (",\n" + "\t"*indent + 'builder.CardAction.openUrl(session, "').join([x[1] + '", "' + x[0] + '")' for x in herocard["link"]]) + ",\n"
+                code += "\t"*indent + 'builder.CardAction.openUrl(session, "' + (",\n" + "\t"*indent + 'builder.CardAction.openUrl(session, "').join([x[0] + '", "' + x[1] + '")' for x in herocard["link"]]) + ",\n"
                 code += "\t"*indent + 'builder.CardAction.postBack(session, "' + (",\n" + "\t"*indent + 'builder.CardAction.postBack(session, "').join([x + '", "' + x + '")' for x in herocard["button"]])
 
             indent -= 1
@@ -109,7 +109,7 @@ def generate_herocard_code(command):
             code += "\t"*indent + ".buttons([\n"
             indent += 1
             #use string join to concatenate the button builders
-            code += "\t"*indent + 'builder.CardAction.openUrl(session, "' + (",\n" + "\t"*indent + 'builder.CardAction.openUrl(session, "').join([x[1] + '", "' + x[0] + '")' for x in herocard["link"]])
+            code += "\t"*indent + 'builder.CardAction.openUrl(session, "' + (",\n" + "\t"*indent + 'builder.CardAction.openUrl(session, "').join([x[0] + '", "' + x[1] + '")' for x in herocard["link"]])
 
             indent -= 1
             code += "\n" + "\t"*indent + "])"
@@ -121,9 +121,8 @@ def generate_herocard_code(command):
             code += "\n"
 
     indent -= 1
-    code += "\t"*indent + "])\n"
+    code += "\t"*indent + "]);\n"
     indent -= 1
-    code += "\t"*indent + ");\n"
 
     #if this herocard contains buttons user could click on
     #use prompt.choice
